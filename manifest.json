@@ -1,0 +1,10 @@
+﻿{
+	"name": "DirectorRework",
+	"version_number": "1.0.1",
+	"website_url": "",
+	"description": "Reworks the director to spawn a variety of enemies, bosses, and elites instead of groups.",
+	"dependencies": [
+		"bbepis-BepInExPack-5.4.2111",
+		"RiskofThunder-HookGenPatcher-1.2.3"
+	]
+}
