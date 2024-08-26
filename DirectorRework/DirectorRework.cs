@@ -10,7 +10,7 @@ using static On.RoR2.BossGroup;
 
 namespace DirectorRework
 {
-  [BepInPlugin("com.Nuxlar.DirectorRework", "DirectorRework", "1.1.0")]
+  [BepInPlugin("com.Nuxlar.DirectorRework", "DirectorRework", "1.1.1")]
 
   public class DirectorRework : BaseUnityPlugin
   {
@@ -43,19 +43,21 @@ namespace DirectorRework
             {
               self.SetNextSpawnAsBoss();
               result = count is 0 || card.cost <= self.monsterCredit;
-            }                                 // Retry if failed due to node placement
+            } // Retry if failed due to node placement
             else break;
           }
           else
           {
-            float index = self.rng.nextNormalizedFloat;
-            card = self.finalMonsterCardsSelection.Evaluate(index);
+            Xoroshiro128Plus rng = self.rng;
+
+            do card = self.finalMonsterCardsSelection.Evaluate(rng.nextNormalizedFloat);
+            while (card.cost / self.monsterCredit < rng.nextNormalizedFloat);
 
             self.PrepareNewMonsterWave(card); // Generate a new elite type
           }
 
         } // Prevent wave from ending early e.g. due to Overloading Worm
-        while (card.cost > previous && card.cost * 0.85 > self.monsterCredit);
+        while (card.cost > previous && card.cost > self.monsterCredit);
 
         self.spawnCountInCurrentWave = count; // Reset to zero; restore previous value
       }
