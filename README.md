@@ -4,19 +4,22 @@ This mod aims to diversify enemy/elite/boss spawns, so instead of getting a hord
 
 ## Changelog
 
+**1.1.1**
+- Prioritize more expensive enemies when sufficient credits are available
+- No change required for *Seekers of the Storm*, backwards compatible
+
 **1.1.0**
 
-- This update is sponsored by 6thmoon. Thanks 6thmoon!
-- Added configuration for teleporter boss to spawn multiple types or not.
-- Fixes Null reference exception on elite type reset
-- Fixes Broken void fields
-- Fixes Inadvertently removed limit on enemies per wave
-- Fixes Wave may end prematurely if a particularly expensive card is chosen
-- Fixes Invalid boss title and/or combat shrine message
+- Added configuration for teleporter boss to spawn multiple types or not
+- Fix null reference exception on elite type reset
+- Fix broken Void Fields
+- Reinstate limit on enemies per wave
+- Prevent wave from ending prematurely if a particularly expensive card is chosen
+- Fix invalid boss title and/or combat shrine message
 
 **1.0.1**
 
-- Fixes non-boss tier enemies spawning instead of bosses on teleporter events
+- Fix non-boss tier enemies spawning instead of bosses on teleporter events
 
 **1.0.0**
 
