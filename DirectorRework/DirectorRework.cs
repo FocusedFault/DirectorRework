@@ -16,14 +16,16 @@ namespace DirectorRework
   {
 
     private ConfigEntry<bool> teleporterBoss;
+
     public void Awake()
     {
       AttemptSpawnOnTarget += ResetMonsterCard;
       SendBroadcastChat_ChatMessageBase += ChangeMessage;
       UpdateBossMemories += UpdateTitle;
+      SpendAllCreditsOnMapSpawns += PopulateScene;
 
-      teleporterBoss = Config.Bind(section: "General", key: "Apply to Teleporter Boss",
-          defaultValue: true, description: "If enabled, multiple boss types may appear.");
+      const string description = "If enabled, multiple boss types may appear.";
+      teleporterBoss = Config.Bind("General", "Apply to Teleporter Boss", true, description);
     }
 
     private bool ResetMonsterCard(orig_AttemptSpawnOnTarget orig, CombatDirector self,
@@ -112,6 +114,20 @@ namespace DirectorRework
         self.bestObservedSubtitle = "<sprite name=\"CloudLeft\" tint=1> " +
             subtitle + " <sprite name=\"CloudRight\" tint=1>";
       }
+    }
+
+    private void PopulateScene(
+        orig_SpendAllCreditsOnMapSpawns orig, CombatDirector self, Transform target)
+    {
+      if (SceneCatalog.mostRecentSceneDef.stageOrder > Run.stagesPerLoop)
+      {
+        bool value = self.resetMonsterCardIfFailed;
+        self.resetMonsterCardIfFailed = false;
+
+        orig(self, target);
+        self.resetMonsterCardIfFailed = value;
+      }
+      else orig(self, target);
     }
 
   }
