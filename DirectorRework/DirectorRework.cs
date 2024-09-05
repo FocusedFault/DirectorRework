@@ -10,20 +10,22 @@ using static On.RoR2.BossGroup;
 
 namespace DirectorRework
 {
-  [BepInPlugin("com.Nuxlar.DirectorRework", "DirectorRework", "1.1.0")]
+  [BepInPlugin("com.Nuxlar.DirectorRework", "DirectorRework", "1.1.1")]
 
   public class DirectorRework : BaseUnityPlugin
   {
 
     private ConfigEntry<bool> teleporterBoss;
+
     public void Awake()
     {
       AttemptSpawnOnTarget += ResetMonsterCard;
       SendBroadcastChat_ChatMessageBase += ChangeMessage;
       UpdateBossMemories += UpdateTitle;
+      SpendAllCreditsOnMapSpawns += PopulateScene;
 
-      teleporterBoss = Config.Bind(section: "General", key: "Apply to Teleporter Boss",
-          defaultValue: true, description: "If enabled, multiple boss types may appear.");
+      const string description = "If enabled, multiple boss types may appear.";
+      teleporterBoss = Config.Bind("General", "Apply to Teleporter Boss", true, description);
     }
 
     private bool ResetMonsterCard(orig_AttemptSpawnOnTarget orig, CombatDirector self,
@@ -43,19 +45,21 @@ namespace DirectorRework
             {
               self.SetNextSpawnAsBoss();
               result = count is 0 || card.cost <= self.monsterCredit;
-            }                                 // Retry if failed due to node placement
+            } // Retry if failed due to node placement
             else break;
           }
           else
           {
-            float index = self.rng.nextNormalizedFloat;
-            card = self.finalMonsterCardsSelection.Evaluate(index);
+            Xoroshiro128Plus rng = self.rng;
+
+            do card = self.finalMonsterCardsSelection.Evaluate(rng.nextNormalizedFloat);
+            while (card.cost / self.monsterCredit < rng.nextNormalizedFloat);
 
             self.PrepareNewMonsterWave(card); // Generate a new elite type
           }
 
         } // Prevent wave from ending early e.g. due to Overloading Worm
-        while (card.cost > previous && card.cost * 0.85 > self.monsterCredit);
+        while (card.cost > previous && card.cost > self.monsterCredit);
 
         self.spawnCountInCurrentWave = count; // Reset to zero; restore previous value
       }
@@ -110,6 +114,20 @@ namespace DirectorRework
         self.bestObservedSubtitle = "<sprite name=\"CloudLeft\" tint=1> " +
             subtitle + " <sprite name=\"CloudRight\" tint=1>";
       }
+    }
+
+    private void PopulateScene(
+        orig_SpendAllCreditsOnMapSpawns orig, CombatDirector self, Transform target)
+    {
+      if (SceneCatalog.mostRecentSceneDef.stageOrder > Run.stagesPerLoop)
+      {
+        bool value = self.resetMonsterCardIfFailed;
+        self.resetMonsterCardIfFailed = false;
+
+        orig(self, target);
+        self.resetMonsterCardIfFailed = value;
+      }
+      else orig(self, target);
     }
 
   }
