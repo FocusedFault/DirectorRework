@@ -4,9 +4,14 @@ This mod aims to diversify enemy/elite/boss spawns, so instead of getting a hord
 
 ## Changelog
 
+**1.1.2**
+
+- No longer affects Halcyonite Shrines
+
 **1.1.1**
+
 - Prioritize more expensive enemies when sufficient credits are available
-- No change required for *Seekers of the Storm*, backwards compatible
+- No change required for _Seekers of the Storm_, backwards compatible
 
 **1.1.0**
 

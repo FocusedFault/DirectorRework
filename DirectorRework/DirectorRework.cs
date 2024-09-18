@@ -10,7 +10,7 @@ using static On.RoR2.BossGroup;
 
 namespace DirectorRework
 {
-  [BepInPlugin("com.Nuxlar.DirectorRework", "DirectorRework", "1.1.1")]
+  [BepInPlugin("com.Nuxlar.DirectorRework", "DirectorRework", "1.1.2")]
 
   public class DirectorRework : BaseUnityPlugin
   {
@@ -31,6 +31,9 @@ namespace DirectorRework
     private bool ResetMonsterCard(orig_AttemptSpawnOnTarget orig, CombatDirector self,
         Transform target, DirectorPlacementRule.PlacementMode mode)
     {
+      if (self.name == "Camp 1 - Flavor Props (Inner Radius)" || self.name == "Camp 2 - Flavor Props (Outer Radius)" || self.name == "ShrineHalcyonite(Clone)")
+        return orig(self, target, mode);
+
       bool result = false;
       ref DirectorCard card = ref self.currentMonsterCard;
 
