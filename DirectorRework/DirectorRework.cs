@@ -10,7 +10,7 @@ using static On.RoR2.BossGroup;
 
 namespace DirectorRework
 {
-  [BepInPlugin("com.Nuxlar.DirectorRework", "DirectorRework", "1.1.2")]
+  [BepInPlugin("com.Nuxlar.DirectorRework", "DirectorRework", "1.1.3")]
 
   public class DirectorRework : BaseUnityPlugin
   {

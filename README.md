@@ -1,8 +1,14 @@
 # Director Rework
 
+### Deprecated, use [DirectorReworkPlus](https://thunderstore.io/package/score/DirectorReworkPlus/) instead
+
 This mod aims to diversify enemy/elite/boss spawns, so instead of getting a horde of pests you get multiple enemy types. Does the same with elites, minimizing hordes of mending for example. Rerolls enemies/elites more often. Yes this applies to teleporter bosses as well (multiple boss types per tp - configurable). Works with all combat directors (normal runs, simulacrum, alt game modes, etc...).
 
 ## Changelog
+
+**1.1.3**
+
+- Deprecated, use DirectorReworkPlus instead
 
 **1.1.2**
 
